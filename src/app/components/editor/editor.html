@@ -1,0 +1,92 @@
+<div class="container">
+  <div class="editor-section">
+    <h3>Editor de Código</h3>
+    <div #editorContainer class="editor"></div>
+    <button (click)="compilar()" class="btn-compilar">Compilar</button>
+  </div>
+
+  <div class="results-section" *ngIf="resultado">
+    <h3>Resultados de la Compilación</h3>
+    
+    <div class="result-box" [class.success]="resultado.success" [class.error]="!resultado.success">
+      <strong>{{ resultado.mensaje }}</strong>
+    </div>
+
+    <div class="tabs">
+      <button 
+        [class.active]="tabActiva === 'tokens'" 
+        (click)="tabActiva = 'tokens'">
+        Tokens ({{ resultado.tokens.length }})
+      </button>
+      <button 
+        [class.active]="tabActiva === 'cuadruplos'" 
+        (click)="tabActiva = 'cuadruplos'">
+        Cuádruplos ({{ resultado.cuadruplos.length }})
+      </button>
+      <button 
+        [class.active]="tabActiva === 'errores'" 
+        (click)="tabActiva = 'errores'">
+        Errores ({{ resultado.errores.length + resultado.erroresSemanticos.length }})
+      </button>
+    </div>
+
+    <div class="tab-content">
+      <!-- Tokens -->
+      <div *ngIf="tabActiva === 'tokens'" class="tokens-list">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Lexema</th>
+              <th>Tipo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let token of resultado.tokens; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td><code>{{ token.lexema }}</code></td>
+              <td>{{ token.tipo }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Cuádruplos -->
+      <div *ngIf="tabActiva === 'cuadruplos'" class="cuadruplos-list">
+        <table>
+          <thead>
+            <tr>
+              <th>Num</th>
+              <th>Operador</th>
+              <th>Operando 1</th>
+              <th>Operando 2</th>
+              <th>Resultado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let cuadruplo of resultado.cuadruplos">
+              <td>{{ cuadruplo.num }}</td>
+              <td><code>{{ cuadruplo.operador }}</code></td>
+              <td>{{ cuadruplo.operando1 }}</td>
+              <td>{{ cuadruplo.operando2 }}</td>
+              <td>{{ cuadruplo.resultado }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Errores -->
+      <div *ngIf="tabActiva === 'errores'" class="errores-list">
+        <div *ngIf="resultado.errores.length === 0 && resultado.erroresSemanticos.length === 0" class="no-errors">
+          ✓ No hay errores
+        </div>
+        <div *ngFor="let error of resultado.errores" class="error-item">
+          <span class="error-badge">Error</span> {{ error }}
+        </div>
+        <div *ngFor="let error of resultado.erroresSemanticos" class="error-item warning">
+          <span class="error-badge">Semántico</span> {{ error }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

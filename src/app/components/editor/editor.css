@@ -1,0 +1,172 @@
+:host {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.container {
+  display: flex;
+  gap: 20px;
+  height: 100%;
+  width: 100%;
+}
+
+.editor-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.editor-section h3 {
+  margin: 0 0 10px 0;
+  flex-shrink: 0;
+}
+
+.results-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  border-left: 2px solid #ddd;
+  padding-left: 20px;
+  min-width: 0;
+}
+
+.results-section h3 {
+  margin: 0 0 10px 0;
+  flex-shrink: 0;
+}
+
+.editor {
+  flex: 1;
+  min-height: 500px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+.btn-compilar {
+  padding: 10px 20px;
+  background: #007acc;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.btn-compilar:hover {
+  background: #005a9e;
+}
+
+.result-box {
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  flex-shrink: 0;
+}
+
+.result-box.success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.result-box.error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.tabs {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #ddd;
+  flex-shrink: 0;
+}
+
+.tabs button {
+  padding: 10px 20px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+}
+
+.tabs button:hover {
+  background: #f5f5f5;
+}
+
+.tabs button.active {
+  border-bottom-color: #007acc;
+  font-weight: bold;
+}
+
+.tab-content {
+  flex: 1;
+  overflow: auto;
+  min-height: 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background: #f5f5f5;
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+tbody tr:hover {
+  background: #f9f9f9;
+}
+
+code {
+  background: #f5f5f5;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: 'Courier New', monospace;
+}
+
+.error-item {
+  padding: 10px;
+  margin-bottom: 8px;
+  background: #fff3cd;
+  border-left: 4px solid #ffc107;
+  border-radius: 4px;
+}
+
+.error-item.warning {
+  background: #fff3cd;
+  border-left-color: #ff9800;
+}
+
+.error-badge {
+  background: #dc3545;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.no-errors {
+  padding: 20px;
+  text-align: center;
+  color: #28a745;
+  font-size: 18px;
+}
