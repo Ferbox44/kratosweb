@@ -32,8 +32,8 @@ A web-based interactive compiler application built with Angular and WebAssembly.
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
-cd kratos
+git clone https://github.com/Ferbox44/kratosweb
+cd kratosweb
 ```
 
 2. Install dependencies:
