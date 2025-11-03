@@ -1,59 +1,129 @@
 # Kratos
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.2.
+A web-based interactive compiler application built with Angular and WebAssembly. Kratos provides a Monaco Editor-powered interface for writing and compiling code, with real-time feedback on tokens, quadruples (intermediate code), and compilation errors.
 
-## Development server
+## Features
 
-To start a local development server, run:
+- 🎨 **Monaco Editor Integration**: Full-featured code editor with syntax highlighting and IntelliSense support
+- ⚡ **WebAssembly Compiler**: Fast, client-side compilation powered by WASM
+- 📊 **Detailed Compilation Results**:
+  - Token analysis (lexical analysis results)
+  - Quadruples (intermediate code representation)
+  - Syntax and semantic error reporting
+- 🎯 **Real-time Feedback**: Instant compilation results with visual indicators
+- 🌙 **Dark Theme**: Modern dark theme for comfortable coding
 
+## Technology Stack
+
+- **Angular** 20.3.0
+- **Monaco Editor** 0.53.0
+- **WebAssembly** (compiler backend)
+- **TypeScript** 5.9.2
+- **RxJS** 7.8.0
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or higher recommended)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
 ```bash
-ng serve
+git clone <repository-url>
+cd kratos
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+2. Install dependencies:
 ```bash
-ng generate component component-name
+npm install
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
+3. Start the development server:
 ```bash
-ng generate --help
+npm start
 ```
 
-## Building
+4. Open your browser and navigate to `http://localhost:4200`
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+### Building for Production
 
 ```bash
-ng test
+npm run build
 ```
 
-## Running end-to-end tests
+The build artifacts will be stored in the `dist/` directory.
 
-For end-to-end (e2e) testing, run:
+## Project Structure
+
+```
+kratos/
+├── src/
+│   ├── app/
+│   │   ├── components/
+│   │   │   └── editor/          # Monaco Editor component
+│   │   ├── services/
+│   │   │   └── compilador.service.ts  # WASM compiler service
+│   │   ├── app.ts               # Root component
+│   │   └── app.routes.ts        # Routing configuration
+│   ├── assets/
+│   │   └── wasm/                # WebAssembly compiler files
+│   │       ├── compilador.js
+│   │       └── compilador.wasm
+│   └── styles.css               # Global styles
+├── dist/                        # Build output
+└── package.json
+```
+
+## Usage
+
+1. Write your code in the Monaco Editor
+2. Click the "Compilar" (Compile) button
+3. View the compilation results in the tabs:
+   - **Tokens**: See the lexical analysis results
+   - **Cuádruplos**: View the generated quadruples (intermediate code)
+   - **Errores**: Check for syntax and semantic errors
+
+## Example Code
+
+The editor comes with a default example:
+
+```plaintext
+class mi_program
+def private A as int;
+main()
+  Cont = 0;
+end
+endclass
+```
+
+## Development
+
+### Running Tests
 
 ```bash
-ng e2e
+npm test
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### Code Style
 
-## Additional Resources
+This project uses Prettier for code formatting with the following configuration:
+- Print width: 100
+- Single quotes
+- Angular HTML parser for template files
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Browser Support
+
+Modern browsers with WebAssembly support:
+- Chrome (latest)
+- Firefox (latest)
+- Edge (latest)
+- Safari (latest)
+
+## License
+
+MIT License
+
+

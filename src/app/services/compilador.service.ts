@@ -48,7 +48,6 @@ export class CompiladorService {
       const script = document.createElement('script');
       script.src = 'assets/wasm/compilador.js';
       script.onload = () => {
-        // Esperar a que el módulo WASM se inicialice
         const checkModule = () => {
           if (window.Module && window.Module.ccall) {
             this.moduleLoaded = true;
@@ -58,7 +57,7 @@ export class CompiladorService {
             setTimeout(checkModule, 50);
           }
         };
-        
+
         if (window.Module && window.Module.onRuntimeInitialized) {
           window.Module.onRuntimeInitialized = () => {
             checkModule();
@@ -78,33 +77,31 @@ export class CompiladorService {
     await this.loadModule();
 
     try {
-      // Verifica que ccall está disponible
       if (!window.Module || !window.Module.ccall) {
         throw new Error('El módulo WASM no está completamente cargado');
       }
 
-      // Llama a la función _analizarCodigo usando ccall
-      // Sintaxis: ccall(nombreFuncion, tipoRetorno, [tiposParametros], [parametros])
-      const resultado = window.Module.ccall(
-        'analizarCodigo',  // Nombre sin el guión bajo
-        'string',          // Tipo de retorno
-        ['string'],        // Tipos de parámetros
-        [codigo]           // Parámetros
-      );
-      
-      console.log('Resultado del compilador:', resultado);
-      
-      // Si el resultado es un string JSON, parsearlo
-      if (typeof resultado === 'string') {
-        return JSON.parse(resultado);
+      // Intentar limpiar memoria si existe una función para ello
+      if (window.Module._limpiarMemoria) {
+        window.Module._limpiarMemoria();
       }
-      
-      return resultado;
+
+      const resultadoString: string = window.Module.ccall(
+        'analizarCodigo',
+        'string',
+        ['string'],
+        [codigo]
+      );
+
+      const resultadoParsed = JSON.parse(resultadoString);
+
+      return JSON.parse(JSON.stringify(resultadoParsed));
+
     } catch (error) {
       console.error('Error al compilar:', error);
       return {
         cuadruplos: [],
-        errores: [`Error al compilar: ${error}`],
+        errores: [],
         erroresSemanticos: [],
         mensaje: 'ERROR EN LA COMPILACIÓN',
         success: false,

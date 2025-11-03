@@ -30,7 +30,7 @@
       </button>
     </div>
 
-    <div class="tab-content">
+    <div class="tab-content" [attr.data-timestamp]="timestamp">
       <!-- Tokens -->
       <div *ngIf="tabActiva === 'tokens'" class="tokens-list">
         <table>
@@ -42,7 +42,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let token of resultado.tokens; let i = index">
+            <tr *ngFor="let token of resultado.tokens; let i = index; trackBy: trackByIndex">
               <td>{{ i + 1 }}</td>
               <td><code>{{ token.lexema }}</code></td>
               <td>{{ token.tipo }}</td>
@@ -64,7 +64,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let cuadruplo of resultado.cuadruplos">
+            <tr *ngFor="let cuadruplo of resultado.cuadruplos; trackBy: trackByCuadruplo">
               <td>{{ cuadruplo.num }}</td>
               <td><code>{{ cuadruplo.operador }}</code></td>
               <td>{{ cuadruplo.operando1 }}</td>
@@ -80,10 +80,10 @@
         <div *ngIf="resultado.errores.length === 0 && resultado.erroresSemanticos.length === 0" class="no-errors">
           ✓ No hay errores
         </div>
-        <div *ngFor="let error of resultado.errores" class="error-item">
+        <div *ngFor="let error of resultado.errores; trackBy: trackByIndex; let i = index" class="error-item">
           <span class="error-badge">Error</span> {{ error }}
         </div>
-        <div *ngFor="let error of resultado.erroresSemanticos" class="error-item warning">
+        <div *ngFor="let error of resultado.erroresSemanticos; trackBy: trackByIndex; let i = index" class="error-item warning">
           <span class="error-badge">Semántico</span> {{ error }}
         </div>
       </div>

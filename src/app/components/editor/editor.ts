@@ -1,27 +1,32 @@
-import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { CompiladorService, ResultadoCompilacion } from '../../services/compilador.service';
+
 declare const monaco: any;
 
 @Component({
   selector: 'app-editor',
   standalone: true,
-  templateUrl: './editor.html',
   imports: [CommonModule],
-  styles: []
+  templateUrl: './editor.html',
+  styleUrls: ['./editor.css']
 })
-export class EditorComponent implements OnInit, OnDestroy {
-  @ViewChild('editorContainer', { static: true }) editorContainer!: ElementRef;
+export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('editorContainer', { static: false }) editorContainer!: ElementRef;
   
   private editor: any;
   resultado: ResultadoCompilacion | null = null;
   tabActiva: 'tokens' | 'cuadruplos' | 'errores' = 'tokens';
+  timestamp: number = Date.now(); // Para forzar recreación del DOM
 
   constructor(private compiladorService: CompiladorService) {}
 
-  ngOnInit(): void {
-    this.initMonaco();
+  ngOnInit(): void {}
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.initMonaco();
+    }, 100);
   }
 
   private initMonaco(): void {
@@ -43,6 +48,9 @@ export class EditorComponent implements OnInit, OnDestroy {
   }
 
   private createEditor(): void {
+    const containerHeight = this.editorContainer.nativeElement.offsetHeight;
+    console.log('Altura del contenedor:', containerHeight);
+
     this.editor = monaco.editor.create(this.editorContainer.nativeElement, {
       value: `class mi_program
 def private A as int;
@@ -55,11 +63,40 @@ endclass`,
       automaticLayout: true,
       fontSize: 14
     });
+
+    setTimeout(() => {
+      if (this.editor) {
+        this.editor.layout();
+      }
+    }, 100);
   }
 
   async compilar(): Promise<void> {
+    console.log('=== Iniciando compilación ===');
+    
+    // Limpiar completamente el resultado
+    this.resultado = null;
+    this.timestamp = Date.now(); // Nuevo timestamp para forzar recreación
+    
     const codigo = this.editor.getValue();
-    this.resultado = await this.compiladorService.compilar(codigo);
+    console.log('Código a compilar:', codigo);
+    
+    const nuevoResultado = await this.compiladorService.compilar(codigo);
+    console.log('Resultado obtenido:', nuevoResultado);
+    
+    // Asignar el nuevo resultado
+    this.resultado = nuevoResultado;
+    
+    console.log('=== Compilación finalizada ===');
+  }
+
+  // Funciones trackBy para optimizar el renderizado
+  trackByIndex(index: number, item: any): number {
+    return index;
+  }
+
+  trackByCuadruplo(index: number, cuadruplo: any): string {
+    return `${cuadruplo.num}-${index}`;
   }
 
   ngOnDestroy(): void {
